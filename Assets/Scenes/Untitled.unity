@@ -2178,6 +2178,10 @@ PrefabInstance:
       propertyPath: _map
       value: 
       objectReference: {fileID: 712484062}
+    - target: {fileID: 8571147692633906254, guid: 3900056619e5e6a459fd6de416c98891, type: 3}
+      propertyPath: _spawnDelay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8571147692633906255, guid: 3900056619e5e6a459fd6de416c98891, type: 3}
       propertyPath: m_Name
       value: CoinSpawner

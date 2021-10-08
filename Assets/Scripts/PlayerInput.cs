@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInput : MonoBehaviour
 {
     public delegate void OnDirectionChanged(float direction);
     public event OnDirectionChanged DirectionChanged;
-    public delegate void OnJumping();
-    public event OnJumping Jumping;
+    public event UnityAction Jumping;
 
     private void Update()
     {

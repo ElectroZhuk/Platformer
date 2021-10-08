@@ -23,12 +23,6 @@ public class Mover : MonoBehaviour
         _input.Jumping += Jump;
     }
 
-    /*private void OnEnable()
-    {
-        _input.DirectionChanged += Move;
-        _input.Jumping += Jump;
-    }*/
-
     private void OnDisable()
     {
         _input.DirectionChanged -= Move;

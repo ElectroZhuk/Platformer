@@ -34,11 +34,6 @@ public class CoinAnimation : MonoBehaviour
         }
     }
 
-    /*private void OnEnable()
-    {
-        _coin.Collected += PlayCollectedAnimation;
-    }*/
-
     private void OnDisable()
     {
         _coin.Collected -= PlayCollectedAnimation;

@@ -2,27 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public class Coin : MonoBehaviour
 {
     [SerializeField] private float _motionAmplitude;
 
-    public delegate void OnCollected();
-    public event OnCollected Collected;
+    public event UnityAction Collected;
 
+    private List<Coroutine> _coroutines;
     private float _centerY;
-    private bool _isMoving;
 
     private void Start()
     {
         _centerY = transform.position.y;
-        _isMoving = false;
-    }
-
-    private void FixedUpdate()
-    {
-        if (_isMoving == false)
-            StartCoroutine(CoinMover());
+        _coroutines = new List<Coroutine>();
+        _coroutines.Add(StartCoroutine(CoinMover()));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,30 +35,32 @@ public class Coin : MonoBehaviour
 
     private void OnDisable()
     {
-        StopCoroutine(CoinMover());
+        foreach (var coroutine in _coroutines)
+            StopCoroutine(coroutine);
     }
 
     private IEnumerator CoinMover()
     {
-        _isMoving = true;
         float targetY;
+        float deltaRatio = 0.1f;
 
-        if ((_centerY + _motionAmplitude - transform.position.y) < Mathf.Abs(_centerY - _motionAmplitude - transform.position.y))
+        while (true)
         {
-            targetY = _centerY - _motionAmplitude;
-        }
-        else
-        {
-            targetY = _centerY + _motionAmplitude;
-        }
+            if ((_centerY + _motionAmplitude - transform.position.y) < Mathf.Abs(_centerY - _motionAmplitude - transform.position.y))
+            {
+                targetY = _centerY - _motionAmplitude;
+            }
+            else
+            {
+                targetY = _centerY + _motionAmplitude;
+            }
 
-        while (Mathf.Abs(transform.position.y - targetY) > 0.01)
-        {
-            transform.position = new Vector2(transform.position.x, Mathf.MoveTowards(transform.position.y, targetY, Mathf.Abs(transform.position.y - targetY) / 10f));
+            while (Mathf.Abs(transform.position.y - targetY) > 0.01)
+            {
+                transform.position = new Vector2(transform.position.x, Mathf.MoveTowards(transform.position.y, targetY, Mathf.Abs(transform.position.y - targetY) * deltaRatio));
 
-            yield return new WaitForFixedUpdate();
+                yield return new WaitForFixedUpdate();
+            }
         }
-
-        _isMoving = false;
     }
 }

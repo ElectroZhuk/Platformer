@@ -10,14 +10,18 @@ public class CoinSpawner : MonoBehaviour
     [SerializeField] private float _spawnDelay;
     [SerializeField] private float _distanceFromGround;
 
+    private List<Coroutine> _coroutines;
+
     private void Start()
     {
-        StartCoroutine(SpawnCoins());
+        _coroutines = new List<Coroutine>();
+        _coroutines.Add(StartCoroutine(SpawnCoins()));
     }
 
     private void OnDisable()
     {
-        StopCoroutine(SpawnCoins());
+        foreach (var coroutine in _coroutines)
+            StopCoroutine(coroutine);
     }
 
     private IEnumerator SpawnCoins()
